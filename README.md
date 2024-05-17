@@ -9,3 +9,14 @@
 5.成本管理：包括原料和成品的庫存情況、出入庫記錄等，從而更加精準地進行庫存管理和預測，減少庫存過多和缺貨的現象，提高了庫存周轉率和資金利用效率。
 
 希望可以通過APP的應用提高竹產業的生產管理水平提高經濟效益，同時確保工廠的永續發展，從而為當地經濟和社會發展做出積極的貢獻，幫助竹子產業這個古老而對瓜地馬拉十分重要的產業注入全新的活力！！
+
+<img width="230" alt="截圖 2024-04-25 下午1 15 15" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/f2653dd0-7092-442c-9661-bf08b8b9beb1">
+<img width="223" alt="截圖 2024-04-25 下午1 14 11" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/30023e99-7a3e-4a25-943b-2533f08284db">
+<img width="226" alt="截圖 2024-04-25 下午1 14 02" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/19041185-76b5-4028-9000-a8a9d7dd602c">
+<img width="226" alt="截圖 2024-04-25 下午1 13 08" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/bb69d263-2730-4b0e-ae92-3e9774df8048">
+<img width="230" alt="截圖 2024-04-25 下午1 12 53" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/c980c902-9c26-4851-9d42-f98f8cea047d">
+<img width="227" alt="截圖 2024-04-25 下午1 12 41" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/8ed99a18-5941-45cb-8a31-4092a1301bf6">
+<img width="230" alt="截圖 2024-04-25 下午1 10 40" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/e50f85db-f369-44e5-8f4e-684ce923dc61">
+<img width="227" alt="截圖 2024-04-25 下午1 09 53" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/754be09a-349a-4cfa-8868-f6c15046186c">
+
+
