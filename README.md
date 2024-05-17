@@ -11,9 +11,9 @@
 
 2.機台管理：遠端掌握機台的即時資訊，透過紀錄每次故障停機原因並將紀錄資料可視化，能夠為員工提供維修預測保養的參考指標，從而減少停機時間減少損失。
 
-<img width="226" alt="截圖 2024-04-25 下午1 14 02" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/19041185-76b5-4028-9000-a8a9d7dd602c">
 <img width="230" alt="截圖 2024-04-25 下午1 12 53" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/c980c902-9c26-4851-9d42-f98f8cea047d">
 <img width="226" alt="截圖 2024-04-25 下午1 13 08" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/bb69d263-2730-4b0e-ae92-3e9774df8048">
+<img width="226" alt="截圖 2024-04-25 下午1 14 02" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/19041185-76b5-4028-9000-a8a9d7dd602c">
 
 3.生產管理：監控生產進度，輕鬆掌握生產狀況。
 
