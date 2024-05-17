@@ -4,6 +4,7 @@
 <img width="230" alt="截圖 2024-04-25 下午1 15 15" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/f2653dd0-7092-442c-9661-bf08b8b9beb1">
 
 系統功能包括：
+
 1.訂單管理：訂單資源的追蹤能，能從容應對突發情況，例如插單或急單，確保訂單能夠如期交貨。
 
 <img width="227" alt="截圖 2024-04-25 下午1 09 53" src="https://github.com/YU-SHAO-XU/Industrial_APP/assets/103430440/754be09a-349a-4cfa-8868-f6c15046186c">
