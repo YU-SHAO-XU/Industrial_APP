@@ -1,3 +1,10 @@
+//
+//  ContentView.swift
+//  Industrial_APP
+//
+//  Created by User on 2023/3/11.
+//
+
 import SwiftUI
 import FirebaseFirestore
 
@@ -20,29 +27,19 @@ struct Order: View {
         NavigationView {
             VStack {
                 List {
-                    HeaderRow()
+                    headerRow
                     
                     ForEach($orders) { $order in
                         HStack {
-                            TextField("Cliente", text: $order.name, onCommit: {
-                                self.saveOrder(order)
-                            })
-                            TextField("Fecha", text: $order.date, onCommit: {
-                                self.saveOrder(order)
-                            })
-                            TextField("Producto", text: $order.product, onCommit: {
-                                self.saveOrder(order)
-                            })
-                            TextField("Cantidad", text: $order.quantity, onCommit: {
-                                self.saveOrder(order)
-                            })
-                            TextField("Entregar", text: $order.delivery, onCommit: {
-                                self.saveOrder(order)
-                            })
+                            OrderTextField(placeholder: "Cliente", text: $order.name, onCommit: { saveOrder(order) })
+                            OrderTextField(placeholder: "Fecha", text: $order.date, onCommit: { saveOrder(order) })
+                            OrderTextField(placeholder: "Producto", text: $order.product, onCommit: { saveOrder(order) })
+                            OrderTextField(placeholder: "Cantidad", text: $order.quantity, onCommit: { saveOrder(order) })
+                            OrderTextField(placeholder: "Entregar", text: $order.delivery, onCommit: { saveOrder(order) })
                             
                             Button(action: {
-                                self.deleteOrder = order
-                                self.showAlert = true
+                                deleteOrder = order
+                                showAlert = true
                             }) {
                                 Image(systemName: "trash")
                                     .foregroundColor(.red)
@@ -50,30 +47,28 @@ struct Order: View {
                         }
                     }
                 }
-                Button(action: {
-                    self.addOrder()
-                }) {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text("Add")
-                    }
-                }
             }
             .navigationBarTitle("Orden", displayMode: .inline)
-            .onAppear {
-                self.fetchOrders()
-            }
+            .navigationBarItems(trailing: Button(action: addOrder) {
+                Image(systemName: "plus")
+            })
+            .onAppear(perform: fetchOrders)
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Confirm Delete"), message: Text("Are you sure you want to delete this row?"), primaryButton: .destructive(Text("Delete")) {
-                    if let orderToDelete = self.deleteOrder {
-                        self.deleteOrder(orderToDelete)
-                    }
-                }, secondaryButton: .cancel())
+                Alert(
+                    title: Text("Confirm Delete"),
+                    message: Text("Are you sure you want to delete this row?"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        if let orderToDelete = deleteOrder {
+                            deleteOrder(orderToDelete)
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
             }
         }
     }
     
-    private func HeaderRow() -> some View {
+    private var headerRow: some View {
         HStack {
             Text("Cliente").font(.footnote).frame(maxWidth: .infinity, alignment: .center)
             Text("Fecha").font(.footnote).frame(maxWidth: .infinity, alignment: .center)
@@ -91,7 +86,7 @@ struct Order: View {
             }
             
             guard let documents = snapshot?.documents else { return }
-            self.orders = documents.compactMap { document in
+            orders = documents.compactMap { document in
                 do {
                     let orderData = try document.data(as: OrderData.self)
                     return orderData
@@ -116,8 +111,8 @@ struct Order: View {
             if let error = error {
                 print("Error deleting document: \(error)")
             } else {
-                if let index = self.orders.firstIndex(where: { $0.id == order.id }) {
-                    self.orders.remove(at: index)
+                if let index = orders.firstIndex(where: { $0.id == order.id }) {
+                    orders.remove(at: index)
                 }
             }
         }
@@ -127,6 +122,18 @@ struct Order: View {
         let newOrder = OrderData(id: UUID().uuidString, name: "", date: "", product: "", quantity: "", delivery: "")
         orders.insert(newOrder, at: 0)
         saveOrder(newOrder)
+    }
+}
+
+struct OrderTextField: View {
+    let placeholder: String
+    @Binding var text: String
+    var onCommit: () -> Void
+    
+    var body: some View {
+        TextField(placeholder, text: $text, onCommit: onCommit)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .padding(.horizontal, 4)
     }
 }
 

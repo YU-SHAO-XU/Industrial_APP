@@ -3,14 +3,7 @@
 //  Industrial_APP
 //
 //  Created by User on 2023/12/29.
-//1/14停機紅匡警示 正常要用綠色
-//每個按鈕按進去要連接到不同機台頁面要怎麼設計(不然總共有32個頁面)
-//次數連接資料庫
-//機台故障維修警示
-//2/19 跟不同機器故障原因分儲存、別讀取firebase 數據並顯示在ＵＩ
-//2/20 toggle更新
-
-
+//
 
 import Foundation
 import SwiftUI
@@ -66,7 +59,6 @@ struct MachineControl: View {
         Machine(machineID: "16", name: "雷射雕刻機 \n LASER", description: "Description 16", isRunning: UserDefaultsManager.shared.getMachineStatus("16")),
     ]
 
-    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -74,11 +66,11 @@ struct MachineControl: View {
                     ForEach(machines) { machine in
                         NavigationLink(destination: MachineDetail(
                             isRunning: $machines[machineIndex(machine)].isRunning,
-                            machine: $machines[machineIndex(machine)], machineID: machine.machineID
-                            )){
+                            machine: $machines[machineIndex(machine)],
+                            machineID: machine.machineID
+                        )) {
                             MachineButton(machine: machine)
                         }
-
                         .padding()
                     }
                 }
@@ -107,6 +99,7 @@ struct MachineButton: View {
             .foregroundColor(.black)
             .truncationMode(.tail)
             .padding(8)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(machine.isRunning ? Color.green : Color.red, lineWidth: 5)
@@ -115,65 +108,66 @@ struct MachineButton: View {
 }
 
 struct MachineDetail: View {
-    
     struct ReasonItem: Identifiable {
         var id = UUID()
         var reason: String
-        var machineID: String // 機台的唯一標識符
-        var reasonID: String // 故障原因的唯一標識符
+        var machineID: String
+        var reasonID: String
         var count: Int
     }
+    
     @Binding var isRunning: Bool
     @Binding var machine: Machine
     @State private var reasons: [ReasonItem] = [
         ReasonItem(reason: "Operación incorrecta", machineID: "", reasonID: "1", count: 0),
         ReasonItem(reason: "Equipo desgastado", machineID: "", reasonID: "2", count: 0),
-        ReasonItem(reason: "Falta de material", machineID: "", reasonID: "3", count:0 ),
+        ReasonItem(reason: "Falta de material", machineID: "", reasonID: "3", count: 0),
         ReasonItem(reason: "Otros", machineID: "", reasonID: "4", count: 0),
     ]
+    
     @Environment(\.dismiss) var dismiss
-    let machineID: String // 這裡將機器ID改為String類型
+    let machineID: String
     
     var body: some View {
+        VStack {
+            Chart(reasons) { reason in
+                SectorMark(
+                    angle: .value(Text(verbatim: reason.reason), reason.count),
+                    innerRadius: .ratio(0.618),
+                    angularInset: 1.5
+                )
+                .foregroundStyle(by: .value(
+                    Text(verbatim: reason.reason),
+                    String(reason.reason)
+                ))
+            }
+            .frame(width: 350, height: 300)
+            
             VStack {
-                Chart(reasons) { reason in
-                    SectorMark(
-                        angle: .value(Text(verbatim: reason.reason), reason.count),
-                        innerRadius: .ratio(0.618), angularInset: 1.5
-                    )
-                    .foregroundStyle(by: .value(
-                        Text(verbatim: reason.reason),
-                        String(reason.reason)
-                    ))
-                }
-                .frame(width: 350, height: 300) // 設定圖表的寬度和高度
-                
-                VStack {
-                    List {
-                        HStack {
-                            Text("Razón")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .listRowBackground(Color.gray) // 整個 HStack 背景色
-                        
-                        ForEach(reasons, id: \.reason) { item in
-                            NavigationLink(destination: ReasonRecord(machineID: machineID, reasonID: item.reasonID)) {
-                                Text(item.reason)
-                                    .font(.callout)
-                                    .lineLimit(2)
-                                    .foregroundColor(.black) // 設置文字顏色為黑色
-                                    .truncationMode(.tail)
-                            }
+                List {
+                    HStack {
+                        Text("Razón")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .listRowBackground(Color.gray)
+                    
+                    ForEach(reasons, id: \.reason) { item in
+                        NavigationLink(destination: ReasonRecord(machineID: machineID, reasonID: item.reasonID)) {
+                            Text(item.reason)
+                                .font(.callout)
+                                .lineLimit(2)
+                                .foregroundColor(.black)
+                                .truncationMode(.tail)
                         }
                     }
-                    .listStyle(PlainListStyle()) // 移除 List 的背景色
                 }
-                 Toggle("Estado", isOn: $isRunning)
-                     .padding()
+                .listStyle(PlainListStyle())
             }
-            .navigationTitle("Analisis fallido") // 設置標題
-            .navigationBarTitleDisplayMode(.inline) // 設置標題顯示模式
-        
+            Toggle("Estado", isOn: $isRunning)
+                .padding()
+        }
+        .navigationTitle("Analisis fallido")
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -187,38 +181,36 @@ struct MachineDetail: View {
         .onDisappear {
             UserDefaultsManager.shared.saveMachineStatus(machine.machineID, isRunning: machine.isRunning)
         }
-    .onAppear {
-        fetchReasonCounts()
-}
+        .onAppear {
+            fetchReasonCounts()
+        }
     }
-func fetchReasonCounts() {
-    let db = Firestore.firestore()
-    let collectionRef = db.collection("Machine_Diary")
-    
-    // Loop through each reason item to fetch count
-    for i in 0..<reasons.count {
-        let reason = reasons[i]
-        
-        collectionRef
-            .whereField("machineID", isEqualTo: machineID)
-            .whereField("reasonID", isEqualTo: reason.reasonID)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error getting documents: \(error)")
-                    return
-                }
-                
-                guard let documents = snapshot?.documents else {
-                    print("No documents")
-                    return
-                }
-                
-                reasons[i].count = documents.count
-            }
-    }
-}
-}
 
+    func fetchReasonCounts() {
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("Machine_Diary")
+        
+        for i in 0..<reasons.count {
+            let reason = reasons[i]
+            collectionRef
+                .whereField("machineID", isEqualTo: machineID)
+                .whereField("reasonID", isEqualTo: reason.reasonID)
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
+                        return
+                    }
+                    
+                    guard let documents = snapshot?.documents else {
+                        print("No documents")
+                        return
+                    }
+                    
+                    reasons[i].count = documents.count
+                }
+        }
+    }
+}
 
 struct MachineControlView_Previews: PreviewProvider {
     static var previews: some View {

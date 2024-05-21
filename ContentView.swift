@@ -11,7 +11,7 @@ struct ContentView: View {
     @StateObject var viewModel = ContentViewModel()
     
     var body: some View {
-        Group{
+        Group {
             if viewModel.userSession == nil {
                 Login()
             } else {
@@ -21,6 +21,7 @@ struct ContentView: View {
     }
 }
 
+// Preview for SwiftUI canvas
 #Preview {
     ContentView()
 }

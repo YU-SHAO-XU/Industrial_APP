@@ -1,10 +1,17 @@
+//
+//  ContentView.swift
+//  Industrial_APP
+//
+//  Created by User on 2023/4/30.
+//
+
 import SwiftUI
 import PDFKit
 
 struct Sop: View {
     var body: some View {
         PDFKitView(pdfName: "sop")
-            .aspectRatio(contentMode: .fit) // 使用fit適應螢幕大小
+            .aspectRatio(contentMode: .fit)
     }
 }
 
@@ -15,17 +22,16 @@ struct PDFKitView: UIViewRepresentable {
             fatalError("Could not find PDF file named \(pdfName).pdf")
         }
         let url = URL(fileURLWithPath: path)
-        let pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)) // 設置 PDFView 的 frame
+        let pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
         pdfView.document = PDFDocument(url: url)
-        pdfView.autoScales = true // 设置自动缩放以适应视图大小
-        pdfView.displayMode = .singlePageContinuous // 設置顯示模式為單頁連續
-        pdfView.maxScaleFactor = 4.0 // 設置最大縮放倍率
+        pdfView.autoScales = true
+        pdfView.displayMode = .singlePageContinuous
+        pdfView.maxScaleFactor = 4.0
         pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
         return pdfView
     }
 
     func updateUIView(_ uiView: PDFView, context: Context) {
-        // Update code when needed
     }
 }
 

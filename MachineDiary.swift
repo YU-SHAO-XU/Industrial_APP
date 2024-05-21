@@ -1,3 +1,10 @@
+//
+//  ContentView.swift
+//  Industrial_APP
+//
+//  Created by User on 2023/1/3.
+//
+
 import SwiftUI
 import FirebaseFirestore
 
@@ -93,11 +100,10 @@ struct ReasonRecord: View {
     }
 
     private func deleteRecord(at indexSet: IndexSet) {
-        // 获取要删除的文档的 ID
+
         let idsToDelete = indexSet.compactMap { repairRecords[$0].id.uuidString }
         repairRecords.remove(atOffsets: indexSet)
-        
-        // 删除对应的 Firebase 文档
+
         let db = Firestore.firestore()
         let ordersCollection = db.collection("Machine_Diary")
         
@@ -162,5 +168,3 @@ struct ReasonRecord: View {
         return dateFormatter.string(from: date)
     }
 }
-
-

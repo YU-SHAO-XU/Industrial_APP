@@ -83,7 +83,7 @@ struct InventoryView: View {
                             TextField("Nonexistence", text: $row.nonexistence, onCommit: {
                                 self.saveRow(row)
                             })
-                            .frame(maxWidth: .infinity, alignment: .leading) // Align the content to the leading edge
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             
                             
@@ -92,24 +92,23 @@ struct InventoryView: View {
                                 self.showAlert = true
                             }) {
                                 Image(systemName: "trash")
+                                    .foregroundColor(.red)
                             }
                         }
                     }
                 }
                 
-                Spacer() // Push "Add" button to the bottom
-                
-                Button(action: {
-                    self.addRow()
-                }) {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text("Add")
-                    }
-                }
+                Spacer()
 
             }
             .navigationBarTitle("Inventario", displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: {
+                            self.addRow()
+                        }) {
+                            HStack {
+                                Image(systemName: "plus")
+                            }
+                        })
             .onAppear {
                 self.fetchRows()
             }
@@ -156,7 +155,6 @@ struct InventoryView: View {
             if let error = error {
                 print("Error deleting document: \(error)")
             } else {
-                // If deletion from Firebase is successful, remove the corresponding row from the UI
                 if let index = self.rows.firstIndex(where: { $0.id == row.id }) {
                     self.rows.remove(at: index)
                 }

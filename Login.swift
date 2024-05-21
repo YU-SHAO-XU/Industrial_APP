@@ -10,7 +10,7 @@ import Firebase
 
 struct Login: View {
     @StateObject var viewModel = LoginViewModel()
-    @State private var isLoggedIn = false // 新增一個狀態來表示是否已登入
+    @State private var isLoggedIn = false 
     
     var body: some View {
         NavigationView {
@@ -31,10 +31,9 @@ struct Login: View {
                     Task {
                         do {
                             try await viewModel.signin()
-                            isLoggedIn = true // 登入成功後設置為 true
+                            isLoggedIn = true 
                         } catch {
                             print("Error: \(error.localizedDescription)")
-                            // 登入失敗，顯示相應的錯誤消息
                         }
                     }
                 } label: {
@@ -53,7 +52,7 @@ struct Login: View {
         .fullScreenCover(isPresented: $isLoggedIn, content: {
             MainTabView()
         })
-        .navigationBarBackButtonHidden(true) // 隱藏返回按鈕
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -70,13 +69,10 @@ class LoginViewModel: ObservableObject {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Password is required"])
         }
         
-        // 驗證帳號密碼
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
-        // 如果驗證成功，result.user 將包含用戶信息
     }
 }
 
-// 修改預覽
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Login()
